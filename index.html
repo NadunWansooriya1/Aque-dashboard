@@ -24,7 +24,7 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         header img {
-            height: 50px;
+            height: 40px; /* Reduced for mobile */
         }
         header h1 {
             font-size: 24px;
@@ -40,31 +40,34 @@
         }
         .login-container {
             background: white;
-            padding: 30px;
+            padding: 20px; /* Reduced padding for mobile */
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             text-align: center;
-            width: 100%;
+            width: 90%; /* Increased width flexibility */
             max-width: 400px;
         }
         .login-container h2 {
-            margin-bottom: 20px;
+            margin-bottom: 15px; /* Reduced margin */
             color: #1e40af;
+            font-size: 22px; /* Adjusted for mobile */
         }
         .login-container input {
             width: 100%;
-            padding: 10px;
-            margin: 10px 0;
+            padding: 8px; /* Reduced padding */
+            margin: 8px 0;
             border: 1px solid #ccc;
             border-radius: 5px;
+            font-size: 14px; /* Adjusted for mobile */
         }
         .login-container button {
             background: #1e40af;
             color: white;
-            padding: 10px 20px;
+            padding: 8px 16px; /* Reduced padding */
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            font-size: 14px; /* Adjusted for mobile */
         }
         .login-container button:hover {
             background: #2563eb;
@@ -72,72 +75,109 @@
         /* Dashboard */
         #dashboard {
             display: none;
-            padding: 20px;
+            padding: 15px; /* Reduced padding */
         }
         .dashboard-header {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px; /* Reduced margin */
         }
         .dashboard-header h2 {
-            font-size: 28px;
+            font-size: 24px; /* Adjusted for mobile */
             color: #1e40af;
         }
         .status-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Adjusted for mobile */
+            gap: 10px; /* Reduced gap */
+            margin-bottom: 20px; /* Reduced margin */
         }
         .status-card {
             background: white;
-            padding: 15px;
+            padding: 10px; /* Reduced padding */
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
         .status-card h3 {
-            font-size: 18px;
-            margin-bottom: 10px;
+            font-size: 16px; /* Adjusted for mobile */
+            margin-bottom: 5px; /* Reduced margin */
             color: #1e40af;
         }
         .status-card p {
-            font-size: 16px;
+            font-size: 14px; /* Adjusted for mobile */
             margin: 0;
         }
         .charts-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: 1fr; /* Single column on mobile */
+            gap: 15px;
         }
         .chart-container {
             background: white;
-            padding: 15px;
+            padding: 10px; /* Reduced padding */
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         canvas {
             max-width: 100%;
+            height: auto !important; /* Ensure charts scale */
         }
         /* Footer */
         footer {
             background: #1e40af;
             color: white;
             text-align: center;
-            padding: 15px;
+            padding: 10px; /* Reduced padding */
             position: relative;
             bottom: 0;
             width: 100%;
         }
-        /* Responsive */
+        /* Responsive Breakpoints */
         @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                text-align: center;
+                padding: 10px;
+            }
+            header img {
+                margin-bottom: 5px;
+            }
             header h1 {
                 font-size: 20px;
             }
+            .login-container {
+                padding: 15px;
+            }
             .dashboard-header h2 {
-                font-size: 24px;
+                font-size: 20px;
             }
             .status-card h3 {
-                font-size: 16px;
+                font-size: 14px;
+            }
+            .status-card p {
+                font-size: 12px;
+            }
+        }
+        @media (max-width: 480px) {
+            .login-container input, .login-container button {
+                font-size: 12px;
+                padding: 6px;
+            }
+            .dashboard-header h2 {
+                font-size: 18px;
+            }
+            .status-grid {
+                grid-template-columns: 1fr; /* Single column on very small screens */
+            }
+            .charts-grid {
+                grid-template-columns: 1fr; /* Single column */
+            }
+            .chart-container {
+                padding: 8px;
+            }
+            footer {
+                padding: 8px;
+                font-size: 12px;
             }
         }
     </style>
@@ -145,7 +185,7 @@
 <body>
     <!-- Header -->
     <header>
-        <img src="./logos.png" alt="Logo">
+        <img src="logos.png" alt="Logo">
         <h1>Aquaculture Water Quality Management System</h1>
     </header>
 
@@ -234,7 +274,7 @@
                     fill: false
                 }]
             },
-            options: { scales: { x: { title: { display: true, text: 'Time' } }, y: { title: { display: true, text: 'Value' } } } }
+            options: { scales: { x: { title: { display: true, text: 'Time' } }, y: { title: { display: true, text: 'Value' } } }, responsive: true, maintainAspectRatio: false }
         });
 
         const turbidityChart = new Chart(ctxTurb, {
@@ -248,7 +288,7 @@
                     fill: false
                 }]
             },
-            options: { scales: { x: { title: { display: true, text: 'Time' } }, y: { title: { display: true, text: 'Value' } } } }
+            options: { scales: { x: { title: { display: true, text: 'Time' } }, y: { title: { display: true, text: 'Value' } } }, responsive: true, maintainAspectRatio: false }
         });
 
         const distanceChart = new Chart(ctxDist, {
@@ -262,7 +302,7 @@
                     fill: false
                 }]
             },
-            options: { scales: { x: { title: { display: true, text: 'Time' } }, y: { title: { display: true, text: 'Value' } } } }
+            options: { scales: { x: { title: { display: true, text: 'Time' } }, y: { title: { display: true, text: 'Value' } } }, responsive: true, maintainAspectRatio: false }
         });
 
         // Fetch ThingSpeak Data
