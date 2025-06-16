@@ -7,173 +7,271 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             margin: 0;
             padding: 0;
             background-color: #f0f4f8;
             color: #333;
+            overflow-x: hidden;
         }
+
         /* Header */
         header {
             background: linear-gradient(90deg, #1e40af, #3b82f6);
             color: white;
-            padding: 15px 20px;
+            padding: 1rem 1.5rem;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
         header img {
-            height: 40px; /* Reduced for mobile */
+            height: 2.5rem;
         }
         header h1 {
-            font-size: 24px;
+            font-size: 1.5rem;
             margin: 0;
+            font-weight: 600;
         }
+
         /* Login Section */
         #login-section {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            background: linear-gradient(135deg, #3b82f6, #93c5fd);
+            min-height: 100vh;
+            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+            padding: 1rem;
         }
         .login-container {
-            background: white;
-            padding: 20px; /* Reduced padding for mobile */
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
             text-align: center;
-            width: 90%; /* Increased width flexibility */
+            width: 100%;
             max-width: 400px;
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.5s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         .login-container h2 {
-            margin-bottom: 15px; /* Reduced margin */
+            margin-bottom: 1.5rem;
             color: #1e40af;
-            font-size: 22px; /* Adjusted for mobile */
+            font-size: 1.75rem;
+            font-weight: 700;
+        }
+        .input-group {
+            position: relative;
+            margin-bottom: 1.5rem;
         }
         .login-container input {
             width: 100%;
-            padding: 8px; /* Reduced padding */
-            margin: 8px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 14px; /* Adjusted for mobile */
+            padding: 0.75rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            font-size: 0.95rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            background: #f9fafb;
+        }
+        .login-container input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        .input-group label {
+            position: absolute;
+            top: 0.75rem;
+            left: 1rem;
+            font-size: 0.95rem;
+            color: #6b7280;
+            transition: all 0.2s;
+            pointer-events: none;
+        }
+        .login-container input:focus + label,
+        .login-container input:not(:placeholder-shown) + label {
+            top: -0.75rem;
+            left: 0.75rem;
+            font-size: 0.75rem;
+            color: #3b82f6;
+            background: #fff;
+            padding: 0 0.25rem;
         }
         .login-container button {
-            background: #1e40af;
+            background: linear-gradient(90deg, #1e40af, #3b82f6);
             color: white;
-            padding: 8px 16px; /* Reduced padding */
+            padding: 0.75rem 1.5rem;
             border: none;
-            border-radius: 5px;
+            border-radius: 0.5rem;
             cursor: pointer;
-            font-size: 14px; /* Adjusted for mobile */
+            font-size: 1rem;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
         }
         .login-container button:hover {
-            background: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
         }
+        .login-container button:active {
+            transform: translateY(0);
+        }
+
         /* Dashboard */
         #dashboard {
             display: none;
-            padding: 15px; /* Reduced padding */
+            padding: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
         }
         .dashboard-header {
             text-align: center;
-            margin-bottom: 15px; /* Reduced margin */
+            margin-bottom: 1.5rem;
         }
         .dashboard-header h2 {
-            font-size: 24px; /* Adjusted for mobile */
+            font-size: 1.75rem;
             color: #1e40af;
+            font-weight: 700;
         }
         .status-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Adjusted for mobile */
-            gap: 10px; /* Reduced gap */
-            margin-bottom: 20px; /* Reduced margin */
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
         }
         .status-card {
             background: white;
-            padding: 10px; /* Reduced padding */
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
             text-align: center;
+            transition: transform 0.2s;
+        }
+        .status-card:hover {
+            transform: translateY(-4px);
         }
         .status-card h3 {
-            font-size: 16px; /* Adjusted for mobile */
-            margin-bottom: 5px; /* Reduced margin */
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
             color: #1e40af;
+            font-weight: 600;
         }
         .status-card p {
-            font-size: 14px; /* Adjusted for mobile */
+            font-size: 0.875rem;
             margin: 0;
+            color: #4b5563;
         }
         .charts-grid {
             display: grid;
-            grid-template-columns: 1fr; /* Single column on mobile */
-            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 1rem;
         }
         .chart-container {
             background: white;
-            padding: 10px; /* Reduced padding */
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            width: 400px;
+            height: 300px;
         }
         canvas {
-            max-width: 100%;
-            height: auto !important; /* Ensure charts scale */
+            width: 100% !important;
+            height: 100% !important;
         }
+
         /* Footer */
         footer {
             background: #1e40af;
             color: white;
             text-align: center;
-            padding: 10px; /* Reduced padding */
+            padding: 10px;
             position: relative;
             bottom: 0;
             width: 100%;
         }
+
         /* Responsive Breakpoints */
+        @media (max-width: 1024px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+                justify-items: center;
+            }
+            .chart-container {
+                width: 400px;
+                height: 300px;
+            }
+            header {
+                padding: 0.75rem 1rem;
+            }
+            header h1 {
+                font-size: 1.25rem;
+            }
+        }
         @media (max-width: 768px) {
             header {
                 flex-direction: column;
                 text-align: center;
-                padding: 10px;
+                padding: 0.5rem;
             }
             header img {
-                margin-bottom: 5px;
-            }
-            header h1 {
-                font-size: 20px;
+                margin-bottom: 0.5rem;
+                height: 2rem;
             }
             .login-container {
-                padding: 15px;
+                padding: 1.5rem;
+                max-width: 350px;
+            }
+            .login-container h2 {
+                font-size: 1.5rem;
             }
             .dashboard-header h2 {
-                font-size: 20px;
+                font-size: 1.5rem;
+            }
+            .status-grid {
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
             }
             .status-card h3 {
-                font-size: 14px;
+                font-size: 0.875rem;
             }
             .status-card p {
-                font-size: 12px;
+                font-size: 0.75rem;
+            }
+            .chart-container {
+                width: 100%;
+                max-width: 400px;
+                height: 300px;
             }
         }
         @media (max-width: 480px) {
-            .login-container input, .login-container button {
-                font-size: 12px;
-                padding: 6px;
+            .login-container {
+                padding: 1rem;
+                max-width: 100%;
+                margin: 0 1rem;
+            }
+            .login-container input,
+            .login-container button {
+                font-size: 0.875rem;
+                padding: 0.5rem;
+            }
+            .login-container h2 {
+                font-size: 1.25rem;
             }
             .dashboard-header h2 {
-                font-size: 18px;
+                font-size: 1.25rem;
             }
             .status-grid {
-                grid-template-columns: 1fr; /* Single column on very small screens */
-            }
-            .charts-grid {
-                grid-template-columns: 1fr; /* Single column */
+                grid-template-columns: 1fr;
             }
             .chart-container {
-                padding: 8px;
+                width: 100%;
+                max-width: 350px;
+                height: 250px;
             }
             footer {
                 padding: 8px;
@@ -192,9 +290,15 @@
     <!-- Login Section -->
     <section id="login-section">
         <div class="login-container">
-            <h2>Login</h2>
-            <input type="email" id="email" placeholder="Email" value="nadunwansooriya1@gmail.com">
-            <input type="password" id="password" placeholder="Password" value="nadun123">
+            <h2>Welcome Back</h2>
+            <div class="input-group">
+                <input type="email" id="email" placeholder=" " value="nadunwansooriya1@gmail.com" required>
+                <label for="email">Email</label>
+            </div>
+            <div class="input-group">
+                <input type="password" id="password" placeholder=" " value="nadun123" required>
+                <label for="password">Password</label>
+            </div>
             <button onclick="login()">Login</button>
         </div>
     </section>
@@ -253,6 +357,8 @@
                 document.getElementById('login-section').style.display = 'none';
                 document.getElementById('dashboard').style.display = 'block';
                 fetchData();
+                // Start live updates every 5 seconds
+                setInterval(fetchData, 5000);
             } else {
                 alert('Invalid credentials');
             }
@@ -274,7 +380,17 @@
                     fill: false
                 }]
             },
-            options: { scales: { x: { title: { display: true, text: 'Time' } }, y: { title: { display: true, text: 'Value' } } }, responsive: true, maintainAspectRatio: false }
+            options: { 
+                scales: { 
+                    x: { title: { display: true, text: 'Time' } }, 
+                    y: { title: { display: true, text: 'Value' } } 
+                }, 
+                responsive: true, 
+                maintainAspectRatio: false,
+                animation: {
+                    duration: 500
+                }
+            }
         });
 
         const turbidityChart = new Chart(ctxTurb, {
@@ -288,7 +404,17 @@
                     fill: false
                 }]
             },
-            options: { scales: { x: { title: { display: true, text: 'Time' } }, y: { title: { display: true, text: 'Value' } } }, responsive: true, maintainAspectRatio: false }
+            options: { 
+                scales: { 
+                    x: { title: { display: true, text: 'Time' } }, 
+                    y: { title: { display: true, text: 'Value' } } 
+                }, 
+                responsive: true, 
+                maintainAspectRatio: false,
+                animation: {
+                    duration: 500
+                }
+            }
         });
 
         const distanceChart = new Chart(ctxDist, {
@@ -302,10 +428,20 @@
                     fill: false
                 }]
             },
-            options: { scales: { x: { title: { display: true, text: 'Time' } }, y: { title: { display: true, text: 'Value' } } }, responsive: true, maintainAspectRatio: false }
+            options: { 
+                scales: { 
+                    x: { title: { display: true, text: 'Time' } }, 
+                    y: { title: { display: true, text: 'Value' } } 
+                }, 
+                responsive: true, 
+                maintainAspectRatio: false,
+                animation: {
+                    duration: 500
+                }
+            }
         });
 
-        // Fetch ThingSpeak Data
+        // Fetch ThingSpeak Data for Status and Charts
         async function fetchData() {
             try {
                 const response = await fetch('https://api.thingspeak.com/channels/2977267/feeds.json?api_key=6SWZC7Q05T5W9KNG&results=12');
@@ -319,16 +455,17 @@
                 document.getElementById('inflow-status').textContent = latestFeed.field5 > 5 ? 'On' : 'Off';
                 document.getElementById('outflow-status').textContent = latestFeed.field6 > 5 ? 'On' : 'Off';
                 document.getElementById('limit-switch').textContent = latestFeed.field7 > 5 ? 'On' : 'Off';
-                document.getElementById('temp-limit').textContent = `${latestFeed.field8} °C`;
+                document.getElementById('temp-limit').textContent = `${latestFeed.field8 || 0} °C`;
 
                 const labels = feeds.map(feed => {
                     const date = new Date(feed.created_at);
                     return date.toLocaleTimeString('en-US', { timeZone: 'Asia/Colombo' });
                 });
-                const tempData = feeds.map(feed => feed.field1);
-                const turbData = feeds.map(feed => feed.field2);
-                const distData = feeds.map(feed => feed.field3);
+                const tempData = feeds.map(feed => parseFloat(feed.field1) || 0);
+                const turbData = feeds.map(feed => parseFloat(feed.field2) || 0);
+                const distData = feeds.map(feed => parseFloat(feed.field3) || 0);
 
+                // Update charts with new data
                 temperatureChart.data.labels = labels;
                 temperatureChart.data.datasets[0].data = tempData;
                 temperatureChart.update();
@@ -347,12 +484,8 @@
                 document.getElementById('outflow-status').textContent = 'Error';
                 document.getElementById('limit-switch').textContent = 'Error';
                 document.getElementById('temp-limit').textContent = 'Error';
-                alert('Failed to load data. Check console for details.');
             }
         }
-
-        // Auto-refresh every 15 seconds
-        setInterval(fetchData, 15000);
     </script>
 </body>
 </html>
